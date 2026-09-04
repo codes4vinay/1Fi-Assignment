@@ -67,8 +67,8 @@ Returns all products with their variants and summary pricing.
       "slug": "iphone-17-pro",
       "name": "iPhone 17 Pro",
       "brand": "Apple",
-      "startingPrice": 131900,
-      "emiFrom": 2233,
+      "startingPrice": 124900,
+      "emiFrom": 2282,
       "variants": []
     }
   ]
@@ -116,12 +116,42 @@ Returns the API and database adapter status.
 
 ## MongoDB Schema
 
-The `Product` Mongoose model stores one document per product. Each document embeds:
+The `Product` Mongoose model stores one document per product in the `products` collection. Product documents contain:
 
-- `variants`: slug, color, color hex, storage, MRP, selling price, pay-now amount, and image URL
+| Field                               | Type   | Description                                   |
+| ----------------------------------- | ------ | --------------------------------------------- |
+| `slug`                              | String | Unique product URL identifier                 |
+| `name`, `brand`, `category`         | String | Product catalogue information                 |
+| `description`, `seller`, `warranty` | String | Product and seller details                    |
+| `rating`                            | Number | Product rating                                |
+| `soldCount`                         | String | Displayed sales count                         |
+| `specifications`                    | Array  | Label/value technical specifications          |
+| `variants`                          | Array  | Colour, storage, pricing, image, and EMI data |
+
+Each embedded variant contains:
+
+- `slug`, `label`, `storage`, `color`, and `colorHex`
+- `mrp`, `price`, and `payNow`
+- `imageUrl` and `galleryImages`
 - `emiPlans`: monthly amount, tenure, interest rate, cashback, and mutual-fund backing label
 
 Embedding variants and plans keeps the product page request to one MongoDB query and makes each product easy to seed or update as a unit. The seed file is [server/seed.js](server/seed.js).
+
+## Seed Data
+
+Run the seed command after configuring `MONGODB_URI`:
+
+```bash
+npm run seed
+```
+
+The repeatable seed creates three products, each with three variants and seven EMI plans per variant:
+
+- Apple iPhone 17 Pro
+- Samsung Galaxy S24 Ultra
+- Google Pixel 9 Pro
+
+The seed also stores product images, variant galleries, pricing, pay-now amounts, cashback, and interest rates.
 
 ## Assignment Coverage
 
