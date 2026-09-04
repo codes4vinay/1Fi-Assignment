@@ -1,6 +1,6 @@
 import Product from '../models/Product.js';
 
-// Convert Mongo subdocuments into the stable API shape used by React.
+// helper functions to format database records for the frontend
 function mapPlan(plan) {
   return { id: String(plan._id), monthlyAmount: plan.monthlyAmount, tenureMonths: plan.tenureMonths, interestRate: plan.interestRate, cashback: plan.cashback, backedBy: plan.backedBy };
 }
@@ -13,7 +13,7 @@ function mapProduct(product) {
   return { id: product.id, slug: product.slug, name: product.name, brand: product.brand, category: product.category, badge: product.badge, description: product.description, rating: product.rating, soldCount: product.soldCount, seller: product.seller, warranty: product.warranty, specifications: product.specifications };
 }
 
-// The listing endpoint includes lightweight summaries plus variant data for the home page.
+// get all products for the home page listing
 export const getProducts = async (req, res, next) => {
   try {
     const products = await Product.find().sort({ createdAt: 1 }).lean();
@@ -28,7 +28,7 @@ export const getProducts = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
-// The detail endpoint returns the complete product and all selectable EMI plans.
+// get full details for a single product page
 export const getProductBySlug = async (req, res, next) => {
   try {
     const product = await Product.findOne({ slug: req.params.slug }).lean();

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-// EMI plans are embedded because they are always read with their product variant.
+// we embed emi plans here since we always need them together with variants
 const emiPlanSchema = new mongoose.Schema({
     monthlyAmount: { type: Number, required: true },
     tenureMonths: { type: Number, required: true },
@@ -9,7 +9,7 @@ const emiPlanSchema = new mongoose.Schema({
     backedBy: { type: String, default: 'Mutual fund-backed EMI' }
 }, { _id: true });
 
-// A variant owns its pricing, appearance, image gallery, and available plans.
+// details for each specific version of a product (like a black 128gb iphone)
 const variantSchema = new mongoose.Schema({
     slug: { type: String, required: true },
     label: { type: String, required: true },
@@ -24,13 +24,13 @@ const variantSchema = new mongoose.Schema({
     emiPlans: { type: [emiPlanSchema], default: [] }
 }, { _id: true });
 
-// Specifications are stored as label/value pairs so products can have different attributes.
+// flexible key-value pairs for different types of specs
 const specificationSchema = new mongoose.Schema({
     label: { type: String, required: true },
     value: { type: String, required: true }
 }, { _id: false });
 
-// Product documents contain the complete read model used by the product page.
+// the main product schema that holds everything together
 const productSchema = new mongoose.Schema({
     slug: { type: String, required: true, unique: true },
     name: { type: String, required: true },

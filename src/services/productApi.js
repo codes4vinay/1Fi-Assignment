@@ -11,7 +11,7 @@ async function requestJson(endpoint) {
     return payload;
 }
 
-// Keep API access in one place so UI components only work with domain data.
+// centralized api calls so our components don't have to deal with fetch logic
 export async function fetchProducts() {
     const payload = await requestJson('/products');
     return payload.products;

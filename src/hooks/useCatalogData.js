@@ -14,7 +14,7 @@ export default function useCatalogData(pathname) {
     useEffect(() => {
         let isCurrentRequest = true;
 
-        // Ignore responses from an older route if the user navigates quickly.
+        // prevent race conditions if the user clicks around too fast
         async function loadCatalog() {
             try {
                 const productList = await fetchProducts();

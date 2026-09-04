@@ -3,7 +3,7 @@ import { getProducts, getProductBySlug } from '../controllers/productsController
 
 const router = express.Router();
 
-// Product routes stay separate from server startup so the API can grow independently.
+// separating product routes to keep things organized
 router.get('/', getProducts);
 router.get('/:slug', getProductBySlug);
 
